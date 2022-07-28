@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextFormField(
                     controller: userregistController,
                     autovalidateMode: submitted
-                        ? AutovalidateMode.onUserInteraction
+                        ? AutovalidateMode.always
                         : AutovalidateMode.disabled,
                     validator: RequiredValidator(errorText: 'Required'),
                     decoration: const InputDecoration(
@@ -105,9 +105,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: passwordregistController,
                     obscureText: pass,
                     autovalidateMode: submitted
-                        ? AutovalidateMode.onUserInteraction
+                        ? AutovalidateMode.always
                         : AutovalidateMode.disabled,
                     validator: passwordValidator,
+                    onChanged: (value) {
+                    },
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: const Icon(
@@ -148,11 +150,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: confirmpasswordregistController,
                     obscureText: confirmpass,
                     autovalidateMode: submitted
-                        ? AutovalidateMode.onUserInteraction
+                        ? AutovalidateMode.always
                         : AutovalidateMode.disabled,
                     validator: (val) =>
                         MatchValidator(errorText: 'passwords do not match')
                             .validateMatch(val!, passwordregistController.text),
+                    onChanged: (value) {
+                    },
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         prefixIcon: const Icon(
@@ -182,7 +186,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      submitted = true;
+                      setState(() {
+                         submitted = true;
+                      });
                       if (_formKey.currentState!.validate()) {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -224,7 +230,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               setState(() {
                                 Navigator.pushNamed(context, '/login');
                               });
-                            }, child: const Text('Sign In'))
+                            },
+                            child: const Text('Sign In'))
                       ],
                     ))
               ],
